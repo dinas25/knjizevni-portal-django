@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Popis djela{% endblock %}
+
+{% block content %}
+<div class="search-box">
+    <form method="get" id="search-form">
+        <input 
+            type="text" 
+            name="q" 
+            id="search-input"
+            placeholder="Pretraži po naslovu..." 
+            value="{{ request.GET.q|default:'' }}"
+            autocomplete="off"
+        >
+    </form>
+</div>
+
+<div id="results-container">
+    {% if djela %}
+        {% for djelo in djela %}
+            <div class="djelo">
+                <h2><a href="{% url 'djelo-detail' djelo.id %}">{{ djelo.naslov }}</a></h2>
+                <p><strong>Autor:</strong> {{ djelo.autor.ime }} {{ djelo.autor.prezime }}</p>
+                <p>{{ djelo.opis|truncatechars:100 }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Nema rezultata za vašu pretragu.</p>
+    {% endif %}
+</div>
+
+<script>
+    const searchInput = document.getElementById('search-input');
+    const form = document.getElementById('search-form');
+
+    searchInput.addEventListener('input', function() {
+        clearTimeout(this.delay);
+        this.delay = setTimeout(function() {
+            sessionStorage.setItem('isSearching', 'true');
+            form.submit();
+        }, 400);
+    });
+
+    window.onload = function() {
+        if (sessionStorage.getItem('isSearching') === 'true') {
+            searchInput.focus();
+            const val = searchInput.value;
+            searchInput.value = '';
+            searchInput.value = val;
+            sessionStorage.removeItem('isSearching');
+        }
+    };
+</script>
+{% endblock %}
