@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Sve recenzije{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 style="margin-top:0; color: #222;">Sve recenzije korisnika</h2>
+    <p style="color: #777;">Ovdje možete pročitati dojmove o svim knjigama u našoj bazi.</p>
+
+    <div class="list-container" style="margin-top: 20px;">
+        {% for recenzija in recenzije %}
+            <div style="display: block; padding: 20px; border: 1px solid #eee; border-radius: 4px; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <a href="{% url 'djelo-detail' recenzija.djelo.id %}" style="text-decoration: none; color: #3498db; font-weight: 600; font-size: 1.1rem;">
+                            {{ recenzija.djelo.naslov }}
+                        </a>
+                        <p style="margin: 5px 0; color: #555; font-size: 0.9rem;">
+                            Korisnik: <strong>{{ recenzija.korisnik.username }}</strong>
+                        </p>
+                    </div>
+                    <span style="background: #f8f9fa; padding: 5px 10px; border-radius: 20px; color: #f39c12; font-weight: bold; border: 1px solid #eee;">
+                        ★ {{ recenzija.ocjena }}
+                    </span>
+                </div>
+                <p style="margin-top: 15px; color: #444; line-height: 1.5; border-left: 3px solid #eee; padding-left: 15px;">
+                    {{ recenzija.tekst }}
+                </p>
+                <div style="text-align: right;">
+                    <small style="color: #bbb;">{{ recenzija.datum|date:"d. m. Y." }}</small>
+                </div>
+            </div>
+        {% empty %}
+            <p>Trenutačno nema dostupnih recenzija.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

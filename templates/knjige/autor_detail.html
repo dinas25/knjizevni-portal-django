@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h1 style="margin-bottom: 0.5rem; font-weight: 600; color: #222;">{{ autor.ime }} {{ autor.prezime }}</h1>
+    <p style="margin-top: 0; color: #777;">Godina rođenja: {{ autor.godina_rodenja }}.</p>
+    
+    <div style="margin-top: 2rem; border-top: 1px solid #eee; padding-top: 1.5rem;">
+        <h3 style="margin-bottom: 1.2rem; color: #444;">Popis djela</h3>
+        <div class="list-container">
+            {% for djelo in autor.djelo_set.all %}
+                <a href="{% url 'djelo-detail' djelo.id %}" class="item-link">
+                    <span class="naslov">{{ djelo.naslov }}</span> 
+                    <span style="float: right; color: #bbb; font-size: 0.85rem;">{{ djelo.godina_izdanja }}. g.</span>
+                </a>
+            {% empty %}
+                <p style="color: #999;">Nema dostupnih djela za ovog autora.</p>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <a href="{% url 'autor-list' %}" class="btn-back">← Natrag na popis autora</a>
+</div>
+{% endblock %}

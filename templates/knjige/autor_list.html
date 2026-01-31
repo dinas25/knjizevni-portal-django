@@ -1,14 +1,42 @@
 {% extends 'base.html' %}
-
-{% block title %}Popis autora{% endblock %}
-
 {% block content %}
-<h2>Popis svih autora</h2>
-<ul>
-    {% for autor in object_list %}
-        <li><strong>{{ autor.ime }} {{ autor.prezime }}</strong> (rođen: {{ autor.godina_rodenja }})</li>
-    {% empty %}
-        <li>Nema unesenih autora.</li>
-    {% endfor %}
-</ul>
+<div class="card">
+    <h2 style="margin-top:0">Popis svih autora</h2>
+    <div class="search-box">
+        <form method="get" id="search-form">
+            <input type="text" name="q" id="search-input" placeholder="Pretraži autore po imenu..." value="{{ request.GET.q|default:'' }}" autocomplete="off">
+        </form>
+    </div>
+
+    <div id="results-container" class="list-container">
+        {% for autor in autori %}
+            <a href="{% url 'autor-detail' autor.id %}" class="item-link">
+                {{ autor.ime }} {{ autor.prezime }}
+            </a>
+        {% empty %}
+            <p>Nema pronađenih autora.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    const searchInput = document.getElementById('search-input');
+    const form = document.getElementById('search-form');
+    searchInput.addEventListener('input', function() {
+        clearTimeout(this.delay);
+        this.delay = setTimeout(function() {
+            sessionStorage.setItem('isSearching', 'true');
+            form.submit();
+        }, 400);
+    });
+    window.onload = function() {
+        if (sessionStorage.getItem('isSearching') === 'true') {
+            searchInput.focus();
+            const val = searchInput.value;
+            searchInput.value = '';
+            searchInput.value = val;
+            sessionStorage.removeItem('isSearching');
+        }
+    };
+</script>
 {% endblock %}

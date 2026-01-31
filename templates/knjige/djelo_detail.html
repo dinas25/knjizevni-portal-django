@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ djelo.naslov }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1 style="margin-bottom: 0.5rem; color: #222;">{{ djelo.naslov }}</h1>
+    <p style="color: #777; margin-top: 0;">
+        Autor: <strong>{{ djelo.autor.ime }} {{ djelo.autor.prezime }}</strong> | 
+        Godina izdanja: {{ djelo.godina_izdanja }}.
+    </p>
+
+    <div style="margin: 20px 0; line-height: 1.8; color: #444;">
+        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">Opis djela</h3>
+        <p>{{ djelo.opis }}</p>
+    </div>
+
+    <div style="margin-top: 30px;">
+        <h3 style="color: #444;">Recenzije čitatelja</h3>
+        <div class="list-container">
+            {% for recenzija in djelo.recenzije.all %}
+    <div style="padding: 15px; border: 1px solid #eee; border-radius: 4px; margin-bottom: 10px; background: #fafafa;">
+        <div style="display: flex; justify-content: space-between;">
+            <span style="font-weight: 600; color: #333;">{{ recenzija.korisnik.username }}</span>
+            <span style="color: #f39c12;">Ocjena: {{ recenzija.ocjena }}/5</span>
+        </div>
+        <p style="font-style: italic; color: #666; margin-top: 10px;">"{{ recenzija.komentar }}"</p>
+        <small style="color: #bbb;">Objavljeno: {{ recenzija.datum|date:"d.m.Y." }}</small>
+    </div>
+{% empty %}
+    <p style="color: #999;">Još nema recenzija za ovo djelo.</p>
+{% endfor %}
+        </div>
+    </div>
+
+    <div style="margin-top: 20px; display: flex; gap: 20px;">
+        <a href="{% url 'djelo-list' %}" class="btn-back">← Povratak na popis djela</a>
+    </div>
+</div>
+{% endblock %}

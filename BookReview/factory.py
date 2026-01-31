@@ -39,15 +39,15 @@ class DjeloFactory(DjangoModelFactory):
     naslov = factory.Faker("sentence", nb_words=4)
     opis = factory.Faker("text", max_nb_chars=300)
     godina_izdanja = factory.Faker("year")
-    autor = factory.Iterator(Autor.objects.all())
-    dodao = factory.Iterator(User.objects.all())
-
+    autor = factory.SubFactory(AutorFactory) 
+    dodao = factory.SubFactory(UserFactory)
 
 class RecenzijaFactory(DjangoModelFactory):
     class Meta:
         model = Recenzija
 
-    djelo = factory.Iterator(Djelo.objects.all())
-    korisnik = factory.Iterator(User.objects.all())
+    djelo = factory.SubFactory(DjeloFactory)
+    korisnik = factory.SubFactory(UserFactory)
     ocjena = factory.Faker("random_int", min=1, max=5)
     komentar = factory.Faker("sentence", nb_words=15)
+    datum = factory.Faker("date_this_century")
