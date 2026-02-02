@@ -1,55 +1,117 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 
-{% block title %}{{ djelo.naslov }}{% endblock %}
+{% block title %}{{ djelo.naslov }}{% endblock %} 
 
 {% block content %}
 <div class="card">
-    <h1 style="margin-bottom: 0.5rem; color: #222;">{{ djelo.naslov }}</h1>
-    <p style="color: #777; margin-top: 0;">
-        Autor: <strong>{{ djelo.autor.ime }} {{ djelo.autor.prezime }}</strong> | 
-        Godina izdanja: {{ djelo.godina_izdanja }}.
-    </p>
+  <h1 style="margin-bottom: 0.5rem; color: #222">{{ djelo.naslov }}</h1>
+  <p style="color: #777; margin-top: 0">
+    Autor: <strong>{{ djelo.autor.ime }} {{ djelo.autor.prezime }}</strong> |
+    Godina izdanja: {{ djelo.godina_izdanja }}.
+  </p>
 
-    <div style="margin: 20px 0; line-height: 1.8; color: #444;">
-        <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">Opis djela</h3>
-        <p>{{ djelo.opis }}</p>
-    </div>
+  <div style="margin: 20px 0; line-height: 1.8; color: #444">
+    <h3 style="border-bottom: 1px solid #eee; padding-bottom: 10px">
+      Opis djela
+    </h3>
+    <p>{{ djelo.opis }}</p>
+  </div>
 
-    {% if user.is_authenticated %}
-        <div style="margin: 20px 0; display: flex; gap: 10px;">
-            {% if djelo.dodao == user %}
-                <a href="{% url 'djelo-update' djelo.pk %}" class="btn" style="background-color: #ffc107; color: #212529; padding: 8px 15px; text-decoration: none; border-radius: 4px;">Uredi</a>
-                <a href="{% url 'djelo-delete' djelo.pk %}" class="btn" style="background-color: #dc3545; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px;">Obriši</a>
-            {% endif %}
-            <a href="{% url 'recenzija-create' djelo.pk %}" class="btn" style="background-color: #17a2b8; color: white; padding: 8px 15px; text-decoration: none; border-radius: 4px;">Napiši recenziju</a>
-        </div>
+  {% if user.is_authenticated %}
+  <div style="margin: 20px 0; display: flex; gap: 10px">
+    {% if djelo.dodao == user %}
+    <a
+      href="{% url 'djelo-update' djelo.pk %}"
+      class="btn"
+      style="
+        background-color: #ffc107;
+        color: #212529;
+        padding: 8px 15px;
+        text-decoration: none;
+        border-radius: 4px;
+      "
+      >Uredi</a
+    >
+    <a
+      href="{% url 'djelo-delete' djelo.pk %}"
+      class="btn"
+      style="
+        background-color: #dc3545;
+        color: white;
+        padding: 8px 15px;
+        text-decoration: none;
+        border-radius: 4px;
+      "
+      >Obriši</a
+    >
     {% endif %}
+    <a
+      href="{% url 'recenzija-create' djelo.pk %}"
+      class="btn"
+      style="
+        background-color: #17a2b8;
+        color: white;
+        padding: 8px 15px;
+        text-decoration: none;
+        border-radius: 4px;
+      "
+      >Napiši recenziju</a
+    >
+  </div>
+  {% endif %}
 
-    <div style="margin-top: 30px;">
-        <h3 style="color: #444;">Recenzije čitatelja</h3>
-        <div class="list-container">
-            {% for recenzija in djelo.recenzije.all %}
-                <div style="padding: 15px; border: 1px solid #eee; border-radius: 4px; margin-bottom: 10px; background: #fafafa;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <span style="font-weight: 600; color: #333;">{{ recenzija.korisnik.username }}</span>
-                        <span style="color: #f39c12;">Ocjena: {{ recenzija.ocjena }}/5</span>
-                    </div>
-                    <p style="font-style: italic; color: #666; margin-top: 10px;">"{{ recenzija.komentar }}"</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                        <small style="color: #bbb;">Objavljeno: {{ recenzija.datum|date:"d.m.Y." }}</small>
-                        {% if user == recenzija.korisnik %}
-                            <a href="{% url 'obrisi-recenziju' recenzija.pk %}" style="color: #dc3545; font-size: 0.9em; text-decoration: none;">Obriši</a>
-                        {% endif %}
-                    </div>
-                </div>
-            {% empty %}
-                <p style="color: #999;">Još nema recenzija za ovo djelo.</p>
-            {% endfor %}
+  <div style="margin-top: 30px">
+    <h3 style="color: #444">Recenzije čitatelja</h3>
+    <div class="list-container">
+      {% for recenzija in djelo.recenzije.all %}
+      <div
+        style="
+          padding: 15px;
+          border: 1px solid #eee;
+          border-radius: 4px;
+          margin-bottom: 10px;
+          background: #fafafa;
+        "
+      >
+        <div style="display: flex; justify-content: space-between">
+          <span style="font-weight: 600; color: #333"
+            >{{ recenzija.korisnik.username }}</span
+          >
+          <span style="color: #f39c12">Ocjena: {{ recenzija.ocjena }}/5</span>
         </div>
+        <p style="font-style: italic; color: #666; margin-top: 10px">
+          "{{ recenzija.komentar }}"
+        </p>
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+          "
+        >
+          <small style="color: #bbb"
+            >Objavljeno: {{ recenzija.datum|date:"d.m.Y." }}</small
+          >
+          {% if user == recenzija.korisnik %}
+          <a
+            href="{% url 'obrisi-recenziju' recenzija.pk %}"
+            style="color: #dc3545; font-size: 0.9em; text-decoration: none"
+            >Obriši</a
+          >
+          {% endif %}
+        </div>
+      </div>
+      {% empty %}
+      <p style="color: #999">Još nema recenzija za ovo djelo.</p>
+      {% endfor %}
     </div>
+  </div>
 
-    <div style="margin-top: 20px; display: flex; gap: 20px;">
-        <a href="{% url 'djelo-list' %}" class="btn-back">← Povratak na popis djela</a>
-    </div>
+  <div style="margin-top: 20px; display: flex; gap: 20px">
+    <a href="{% url 'djelo-list' %}" class="btn-back"
+      >← Povratak na popis djela</a
+    >
+  </div>
 </div>
 {% endblock %}
