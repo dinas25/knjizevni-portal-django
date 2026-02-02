@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if object %}
+        Uredi djelo: {{ object.naslov }}
+    {% else %}
+        Dodaj novo djelo
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 style="margin-top: 0; color: #222;">
+        {% if object %}
+            Uredi djelo: {{ object.naslov }}
+        {% else %}
+            Dodaj novo djelo
+        {% endif %}
+    </h2>
+    
+    <form method="post" novalidate>
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div style="margin-bottom: 20px;">
+                <label for="{{ field.id_for_label }}" style="display: block; margin-bottom: 8px; font-weight: 500; color: #444;">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small style="color: #888; display: block; margin-top: 4px;">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                    <div style="color: #dc3545; font-size: 0.9em; margin-top: 4px;">{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        
+        <div style="margin-top: 30px; display: flex; gap: 15px;">
+            <button type="submit" class="btn" style="background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Spremi</button>
+            <a href="{% if object %}{% url 'djelo-detail' object.pk %}{% else %}{% url 'djelo-list' %}{% endif %}" class="btn" style="background-color: #6c757d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">Odustani</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

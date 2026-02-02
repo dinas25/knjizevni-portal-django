@@ -4,8 +4,13 @@
 
 {% block content %}
 <div class="card">
-    <h2 style="margin-top:0; color: #222;">Popis svih djela</h2>
-    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="margin: 0; color: #222;">Popis svih djela</h2>
+        {% if user.is_authenticated %}
+            <a href="{% url 'djelo-create' %}" class="btn" style="background-color: #28a745; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px;">+ Dodaj novo djelo</a>
+        {% endif %}
+    </div>
+
     <div class="search-box">
         <form method="get" id="search-form">
             <input 

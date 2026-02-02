@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Potvrda brisanja{% endblock %}
+
+{% block content %}
+<div class="card" style="text-align: center; padding: 40px;">
+    <h2 style="color: #dc3545;">Jeste li sigurni?</h2>
+    <p style="font-size: 1.1rem; color: #555;">
+        Želite li, bez povratka, obrisati djelo "<strong>{{ object.naslov }}</strong>"?
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div style="margin-top: 30px; display: flex; justify-content: center; gap: 20px;">
+            <button type="submit" class="btn" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Da, obriši</button>
+            <a href="{% url 'djelo-detail' object.pk %}" class="btn" style="background-color: #6c757d; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">Ne, odustani</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

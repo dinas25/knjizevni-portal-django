@@ -106,7 +106,7 @@ class RecenzijaCreateView(LoginRequiredMixin, CreateView):
 
 class RecenzijaDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Recenzija
-    template_name = "registration/recenzija_confirm_delete.html"
+    template_name = "knjige/recenzija_confirm_delete.html"
 
     def get_success_url(self):
         return reverse_lazy(
